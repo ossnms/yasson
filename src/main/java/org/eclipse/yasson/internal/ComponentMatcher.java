@@ -206,6 +206,14 @@ public class ComponentMatcher {
         
         Optional<Class<?>> runtimeClass = ReflectionUtils.getOptionalRawType(runtimeType);
         if (runtimeClass.isPresent()) {
+            // First check if there is an exact match for the raw class
+            ComponentBindings rawBinding = userComponents.get(runtimeClass.get());
+            if (rawBinding != null) {
+                Optional<T> match = getMatchingBinding(runtimeClass.get(), rawBinding, supplier);
+                if (match.isPresent()) {
+                    return match;
+                }
+            }
             // Check if any interfaces have a match
             for (Class<?> ifc : runtimeClass.get().getInterfaces()) {
                 ComponentBindings ifcBinding = userComponents.get(ifc);
