@@ -59,6 +59,11 @@ class YassonParser implements JsonParser {
     }
 
     @Override
+    public Event currentEvent() {
+        return delegate.currentEvent();
+    }
+
+    @Override
     public boolean hasNext() {
         if (level < 1) {
             return false;
